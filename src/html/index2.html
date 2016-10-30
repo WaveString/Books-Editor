@@ -9,7 +9,40 @@
 </head>
 
 <body>
-  <h1>#2</h1>
-  <a href="/">#1</a>
+  <div class="navigation">
+    <a class="navigation__item" href="/">#1</a>
+    <span class="navigation__item navigation__item_select">#2</span>
+  </div>
+
+  <input type="checkbox" id="checkbox" />
+  <label for="checkbox">rtl/ltr</label>
+
+  <div class="form">
+      <div class="form__button-wrapper">
+        <button class="form__button">Send code</button>
+      </div>
+      <div class="form__input-wrapper">
+        <input type="text" class="form__input"/>
+        <div>
+          <span class="form__info">
+            Example: 45345-354535-345345-345354A
+          </span>
+        </div>
+      </div>
+  </div>
+
 </body>
+
+<script>
+  var checkbox = document.getElementById('checkbox');
+
+  checkbox.onchange = function (e) {
+    var checked = e.target.checked;
+    if (checked) {
+      document.getElementsByTagName('html')[0].setAttribute('dir', 'rtl');
+    } else {
+      document.getElementsByTagName('html')[0].setAttribute('dir', 'ltr');
+    }
+  };
+</script>
 </html>

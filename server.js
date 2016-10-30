@@ -4,11 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 
-// Express
 const app = express();
-const server = app.listen(config.port, () => {
-    console.log(`listening on *: ${config.port}`);
-});
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -16,12 +12,12 @@ app.use(express.static(`${__dirname}/build`));
 
 if (__DEVELOPMENT__) {
     const webpack = require('webpack');
-    const config = require('./webpack.config.dev');
-    const compiler = webpack(config);
+    const webpackConfig = require('./webpack.config.dev');
+    const compiler = webpack(webpackConfig);
 
     app.use(require('webpack-dev-middleware')(compiler, {
         noInfo: true,
-        publicPath: config.output.publicPath
+        publicPath: webpackConfig.output.publicPath
     }));
 
     app.use(require('webpack-hot-middleware')(compiler));
@@ -29,3 +25,7 @@ if (__DEVELOPMENT__) {
 
 app.get('/markup', (req, res) => res.sendFile(`${__dirname}/build/index2.html`));
 app.get('/*', (req, res) => res.sendFile(`${__dirname}/build/index.html`));
+
+app.listen(config.port, () => {
+    console.log(`listening on *: ${config.port}`);
+});

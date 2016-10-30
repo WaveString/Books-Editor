@@ -1,0 +1,55 @@
+:global .navigation {
+    width: 200px;
+    margin-bottom: 25px;
+}
+
+:global .navigation__item {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+:global .navigation__item_select {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+:global html[dir="rtl"] {
+    direction: rtl;
+}
+
+:global html[dir="rtl"] .form__button-wrapper  {
+    margin-right: 15px;
+    margin-left: 0;
+    float: left;
+}
+
+:global .form__input-wrapper {
+    overflow: hidden;
+}
+
+:global .form__input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px;
+}
+
+:global .form__button-wrapper {
+    margin-left: 15px;
+    float: right;
+}
+
+:global .form__button {
+    cursor: pointer;
+    color: #333;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px 20px;
+    background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 );
+}
+
+:global .form__info {
+    color: #ccc;
+    font-size: 12px;
+}

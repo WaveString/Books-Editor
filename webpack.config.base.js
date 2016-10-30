@@ -2,12 +2,14 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const books = require('./config/books.json');
 
 module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             'process.env': {
-                NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+                BOOKS: JSON.stringify(books)
             }
         }),
         new HtmlWebpackPlugin({
@@ -29,8 +31,8 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                loaders: ExtractTextPlugin.extract('style',
-                    'css?modules&importLoaders=1&localIdentName=[name]__[local]!postcss'),
+                loader: ExtractTextPlugin.extract('style',
+                    'css?modules&importLoaders=1&localIdentName=[folder]__[local]-[hash:base64:5]!postcss'),
                 include: /src/
             },
             {

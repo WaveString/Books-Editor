@@ -1,0 +1,16 @@
+.list {
+    display: inline-block;
+    vertical-align: top;
+    width: 350px;
+}
+
+.form {
+    display: inline-block;
+    margin-left: 50px;
+    vertical-align: top;
+    width: 450px;
+}
+
+.controls {
+    padding-left: 12px;
+}

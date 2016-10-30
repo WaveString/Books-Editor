@@ -1,0 +1,36 @@
+[
+  {
+    "id": "1",
+    "title": "Пикник на обочине",
+    "authors": [
+      {
+        "firstName": "Аркадий",
+        "lastName": "Стругацкий"
+      },
+      {
+        "firstName": "Борис",
+        "lastName": "Стругацкий"
+      }
+    ],
+    "pages": "192",
+    "publisherName": "АСТ Москва",
+    "published": "1971",
+    "release": "01.01.2015",
+    "ISBN": "978-5-17-093041-8"
+  },
+  {
+    "id": "2",
+    "title": "Идиот",
+    "authors": [
+      {
+        "firstName": "Федор",
+        "lastName": "Достоевский"
+      }
+    ],
+    "pages": "640",
+    "publisherName": "Эксмо",
+    "published": "1868",
+    "release": "10.02.2002",
+    "ISBN": "978-5-699-37478-6"
+  }
+]
