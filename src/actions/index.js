@@ -5,6 +5,9 @@ export const ADD_NEW_BOOK = 'ADD_NEW_BOOK';
 export const SAVE_CHANGES = 'SAVE_CHANGES';
 export const VALIDATION_ERROR = 'VALIDATION_ERROR';
 export const DELETE_BOOK = 'DELETE_BOOK';
+export const ADD_NEW_AUTHOR = 'ADD_NEW_AUTHOR';
+export const DELETE_AUTHOR = 'DELETE_AUTHOR';
+export const CHANGE_ARRAY_FIELD = 'CHANGE_ARRAY_FIELD';
 
 export function initializeValues(books) {
     return {
@@ -28,11 +31,14 @@ export function changeField(field, value) {
     };
 }
 
-export function validationErrors(field, error) {
+export function changeArrayField(id, arrayField, index, field, value) {
     return {
-        type: VALIDATION_ERROR,
+        type: CHANGE_ARRAY_FIELD,
+        id,
+        arrayField,
+        index,
         field,
-        error
+        value
     };
 }
 
@@ -53,5 +59,19 @@ export function deleteBook(id) {
 export function addNewBook() {
     return {
         type: ADD_NEW_BOOK
+    };
+}
+
+export function addNewAuthor(id) {
+    return {
+        type: ADD_NEW_AUTHOR,
+        id
+    };
+}
+
+export function deleteAuthor(id) {
+    return {
+        type: DELETE_AUTHOR,
+        id
     };
 }

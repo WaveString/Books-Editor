@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import DatePicker from 'material-ui/DatePicker';
+import AuthorsField from '../AuthorsField';
+import { isEmptyObject } from '../../utils';
 import styles from './index.css';
-import { validate } from '../../utils/validation';
-import { clean } from '../../utils';
 
 export default class BookForm extends Component {
     constructor() {
@@ -17,9 +18,7 @@ export default class BookForm extends Component {
     handleOnChange(e) {
         const value = e.target.value;
         const field = e.target.getAttribute('id');
-        const error = validate(field, value);
 
-        this.props.onValidationErrors(field, error);
         this.props.onFieldEdit(field, value);
     }
 
@@ -34,10 +33,10 @@ export default class BookForm extends Component {
     }
 
     render() {
-        const { book, changes, errors, valid } = this.props;
+        const { book, changes, errors, valid, onAddNewAuthor, onDeleteAuthor, onArrayFieldEdit } = this.props;
 
-        if (Object.keys(book).length === 0) {
-            return <div></div>;
+        if (isEmptyObject(book)) {
+            return null;
         }
 
         return (
@@ -58,6 +57,15 @@ export default class BookForm extends Component {
                     errorText={errors.pages}
                     onChange={this.handleOnChange}
                 />
+                <AuthorsField
+                    bookId={book.id}
+                    authors={book.authors}
+                    changes={changes.authors}
+                    errors={errors.authors}
+                    onAddNewAuthor={onAddNewAuthor}
+                    onDeleteAuthor={onDeleteAuthor}
+                    onArrayFieldEdit={onArrayFieldEdit}
+                />
                 <TextField
                     floatingLabelText="Название издательства"
                     hintText="Введите название издательства"
@@ -74,6 +82,7 @@ export default class BookForm extends Component {
                     errorText={errors.published}
                     onChange={this.handleOnChange}
                 />
+                <DatePicker hintText="Landscape Inline Dialog" container="inline" mode="landscape" />
                 <TextField
                     floatingLabelText="Дата выхода в тираж"
                     hintText="Введите дату выхода в тираж"
@@ -96,15 +105,13 @@ export default class BookForm extends Component {
                         onClick={this.handleOnSave}
                         label="Сохранить"
                         primary={ true }
-                        disabled={
-                            Object.keys(changes).length === 0 ||
-                            Object.keys(clean(errors)).length !== 0 ||
-                            !valid } />
+                        disabled={ !valid } />
                     <RaisedButton
                         className={styles.button}
                         onClick={this.handleOnDelete}
                         label="Удалить"
-                        secondary={ true } />
+                        secondary={ true }
+                        />
                 </div>
             </div>
         );

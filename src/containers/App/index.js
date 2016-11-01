@@ -11,10 +11,12 @@ import {
     setCurrentBook,
     changeField,
     saveChanges,
-    validationErrors,
     deleteBook,
     addNewBook,
-    initializeValues
+    initializeValues,
+    addNewAuthor,
+    deleteAuthor,
+    changeArrayField
 } from '../../actions';
 import styles from './index.css';
 
@@ -37,10 +39,12 @@ export class App extends Component {
             valid,
             onBookClick,
             onFieldEdit,
+            onArrayFieldEdit,
             onSaveChanges,
             onAddNewBook,
-            onValidationErrors,
-            onDelete
+            onDelete,
+            onAddNewAuthor,
+            onDeleteAuthor
         } = this.props;
 
         return (
@@ -63,9 +67,11 @@ export class App extends Component {
                             errors={ errors }
                             valid={ valid }
                             onFieldEdit={ onFieldEdit }
-                            onValidationErrors={ onValidationErrors }
+                            onArrayFieldEdit={ onArrayFieldEdit }
                             onSaveChanges={ onSaveChanges }
                             onDelete={ onDelete }
+                            onAddNewAuthor={ onAddNewAuthor }
+                            onDeleteAuthor={ onDeleteAuthor }
                             />
                     </div>
                 </div>
@@ -88,10 +94,12 @@ const mapDispatchToProps = (dispatch) => ({
     initializeValues: (books) => dispatch(initializeValues(books)),
     onBookClick: (id) => dispatch(setCurrentBook(id)),
     onFieldEdit: (...args) => dispatch(changeField(...args)),
+    onArrayFieldEdit: (...args) => dispatch(changeArrayField(...args)),
     onSaveChanges: (id) => dispatch(saveChanges(id)),
     onAddNewBook: () => dispatch(addNewBook()),
-    onValidationErrors: (field, error) => dispatch(validationErrors(field, error)),
-    onDelete: (id) => dispatch(deleteBook(id))
+    onDelete: (id) => dispatch(deleteBook(id)),
+    onAddNewAuthor: (id) => dispatch(addNewAuthor(id)),
+    onDeleteAuthor: (id) => dispatch(deleteAuthor(id))
 });
 
 export default connect(select, mapDispatchToProps)(App);

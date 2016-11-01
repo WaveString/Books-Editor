@@ -18,7 +18,7 @@ const BookList = ({ books, currentBookId, onBookClick }) => {
         </List>);
     }
 
-    return <div></div>;
+    return null;
 };
 
 export default BookList;
