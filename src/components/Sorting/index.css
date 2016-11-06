@@ -1,5 +1,5 @@
-.button {
+.wrapper {
     display: inline-block;
     vertical-align: top;
-    margin-top: 3px;
+    margin-left: 20px;
 }

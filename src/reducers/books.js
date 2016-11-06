@@ -1,29 +1,37 @@
 import {
     INITIALIZE_VALUES,
-    SET_CURRENT_BOOKS,
+    SET_CURRENT_BOOK,
     CHANGE_FIELD,
     ADD_NEW_BOOK,
     SAVE_CHANGES,
     DELETE_BOOK,
     ADD_NEW_AUTHOR,
     DELETE_AUTHOR,
-    CHANGE_ARRAY_FIELD
+    CHANGE_ARRAY_FIELD,
+    ADD_SORT_FIELD,
+    DELETE_SORT_FIELD,
+    UPLOAD_IMAGE_SUCCESS,
+    UPLOAD_IMAGE_ERROR
 } from '../actions';
 
-import { validate, formIsValid } from '../utils/validation';
+import { formReducer } from './form';
 
-const initialState = {
-    isLoaded: false,
+export const initialState = {
     list: [],
     form: {
         changes: {},
         errors: {},
         valid: false
     },
-    currentBookId: 0
+    currentBookId: 0,
+    sort: {
+        title: false,
+        published: false
+    }
 };
 
 const emptyBook = {
+    image: '',
     title: '',
     authors: [],
     pages: '',
@@ -33,22 +41,20 @@ const emptyBook = {
     ISBN: ''
 };
 
-const emptyAuthor = {
-    firstName: '',
-    lastName: ''
-};
-
 export function booksReducer(state = initialState, action) {
     let currentBook;
+    let list;
+    let sort;
 
     switch (action.type) {
         case INITIALIZE_VALUES:
             return {
                 ...state,
                 list: [ ...action.books ],
-                currentBookId: action.books[0] && action.books[0].id || 0
+                currentBookId: action.books[0] && action.books[0].id || 0,
+                sort: action.sort || state.sort
             };
-        case SET_CURRENT_BOOKS:
+        case SET_CURRENT_BOOK:
             return {
                 ...state,
                 currentBookId: action.id,
@@ -121,76 +127,44 @@ export function booksReducer(state = initialState, action) {
                 ...state,
                 form: formReducer(state.form, { ...action, currentBook })
             };
-        default:
-            return state;
-    }
-}
-
-export function formReducer(state = initialState.form, action) {
-    let changes;
-    let authors;
-
-    switch (action.type) {
-        case SAVE_CHANGES:
-            return {
-                ...state,
-                changes: {}
-            };
-        case ADD_NEW_BOOK:
-            return {
-                ...state,
-                changes: {
-                    ...action.newBook
-                },
-                valid: false
-            };
-        case CHANGE_FIELD:
-            changes = { ...state.changes, [action.field]: action.value };
-            return {
-                ...state,
-                changes,
-                errors: { ...state.errors, [action.field]: validate(action.field, action.value) },
-                valid: formIsValid(changes)
-            };
-        case CHANGE_ARRAY_FIELD:
-            const arr = state.changes[action.arrayField] || action.currentBook[action.arrayField];
-            const newArr = arr.map((item, i) => i === action.index ? { ...item, [action.field]: action.value } : item);
-            changes = { ...state.changes, [action.arrayField]: newArr };
+        case ADD_SORT_FIELD:
+            sort = { ...state.sort, [action.field]: true };
+            localStorage.setItem('sort', JSON.stringify(sort));
 
             return {
                 ...state,
-                errors: {
-                    ...state.errors,
-                    [action.arrayField]: validate(action.arrayField, changes[action.arrayField])
-                },
-                changes,
-                valid: formIsValid(changes)
+                sort
             };
-        case SET_CURRENT_BOOKS:
-            return {
-                ...state,
-                changes: {}
-            };
-        case ADD_NEW_AUTHOR:
-            const authorsList = state.changes.authors || action.authors;
-            return {
-                ...state,
-                changes: {
-                    ...state.changes,
-                    authors: [ ...authorsList, emptyAuthor]
-                },
-                valid: false
-            };
-        case DELETE_AUTHOR:
-            authors = state.changes.authors || action.currentBook.authors;
-            const lastId = authors.length - 1;
-            const deletedAuthor = authors.filter((author, i) => i !== lastId);
-            changes = { ...state.changes, authors: [ ...deletedAuthor ] };
+        case DELETE_SORT_FIELD:
+            sort = { ...state.sort, [action.field]: false };
+            localStorage.setItem('sort', JSON.stringify(sort));
 
             return {
                 ...state,
-                changes,
-                valid: formIsValid(changes)
+                sort
+            };
+        case UPLOAD_IMAGE_SUCCESS:
+            const isExist = state.list.some(book => book.id === action.id);
+
+            if (isExist) {
+                list = [ ...state.list.map(book =>
+                    book.id === action.id ? ({ ...book, image: action.imageUrl }) : book) ];
+                localStorage.setItem('books', JSON.stringify(list));
+                return {
+                    ...state,
+                    list,
+                    form: formReducer(state.form, action)
+                };
+            }
+
+            return {
+                ...state,
+                form: formReducer(state.form, action)
+            };
+        case UPLOAD_IMAGE_ERROR:
+            return {
+                ...state,
+                form: formReducer(state.form, action)
             };
         default:
             return state;

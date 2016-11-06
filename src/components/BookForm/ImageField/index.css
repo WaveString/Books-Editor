@@ -1,0 +1,14 @@
+.image {
+    width: 100%;
+}
+
+.input {
+    display: none;
+}
+
+.error {
+    position: relative;
+    font-size: 12px;
+    line-height: 12px;
+    color: rgb(244, 67, 54);
+}

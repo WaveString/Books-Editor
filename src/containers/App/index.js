@@ -5,8 +5,10 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import BookForm from '../../components/BookForm';
 import BookList from '../../components/BookList';
 import AddButton from '../../components/AddButton';
+import Sorting from '../../components/Sorting';
 
 import { findCurrentBook } from '../../store/helpers';
+import { sortBooks } from '../../utils';
 import {
     setCurrentBook,
     changeField,
@@ -16,7 +18,10 @@ import {
     initializeValues,
     addNewAuthor,
     deleteAuthor,
-    changeArrayField
+    changeArrayField,
+    addSortField,
+    deleteSortField,
+    uploadImage
 } from '../../actions';
 import styles from './index.css';
 
@@ -27,12 +32,14 @@ export class App extends Component {
 
     componentDidMount() {
         const books = localStorage.getItem('books') ? JSON.parse(localStorage.getItem('books')) : process.env.BOOKS;
-        this.props.initializeValues(books);
+        const sort = localStorage.getItem('sort') ? JSON.parse(localStorage.getItem('sort')) : null;
+        this.props.initializeValues(books, sort);
     }
 
     render() {
         const {
             books,
+            sort,
             currentBook,
             changes,
             errors,
@@ -44,14 +51,22 @@ export class App extends Component {
             onAddNewBook,
             onDelete,
             onAddNewAuthor,
-            onDeleteAuthor
+            onDeleteAuthor,
+            onAddSortField,
+            onDeleteSortField,
+            onChooseImage
         } = this.props;
 
         return (
             <MuiThemeProvider>
                 <div>
                     <div className={ styles.controls }>
-                        <AddButton onAddNewBook={ onAddNewBook }/>
+                        <AddButton onAddNewBook={ onAddNewBook } />
+                        <Sorting
+                            sort={sort}
+                            onAddSortField={onAddSortField}
+                            onDeleteSortField={onDeleteSortField}
+                        />
                     </div>
                     <div className={ styles.list }>
                         <BookList
@@ -72,6 +87,7 @@ export class App extends Component {
                             onDelete={ onDelete }
                             onAddNewAuthor={ onAddNewAuthor }
                             onDeleteAuthor={ onDeleteAuthor }
+                            onChooseImage={ onChooseImage }
                             />
                     </div>
                 </div>
@@ -82,16 +98,17 @@ export class App extends Component {
 
 const select = (state) => {
     return {
-        books: state.books.list,
+        books: sortBooks(state.books.list, state.books.sort),
         currentBook: findCurrentBook(state),
         changes: state.books.form.changes,
         errors: state.books.form.errors,
-        valid: state.books.form.valid
+        valid: state.books.form.valid,
+        sort: state.books.sort
     };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    initializeValues: (books) => dispatch(initializeValues(books)),
+    initializeValues: (books, sort) => dispatch(initializeValues(books, sort)),
     onBookClick: (id) => dispatch(setCurrentBook(id)),
     onFieldEdit: (...args) => dispatch(changeField(...args)),
     onArrayFieldEdit: (...args) => dispatch(changeArrayField(...args)),
@@ -99,7 +116,10 @@ const mapDispatchToProps = (dispatch) => ({
     onAddNewBook: () => dispatch(addNewBook()),
     onDelete: (id) => dispatch(deleteBook(id)),
     onAddNewAuthor: (id) => dispatch(addNewAuthor(id)),
-    onDeleteAuthor: (id) => dispatch(deleteAuthor(id))
+    onDeleteAuthor: (id) => dispatch(deleteAuthor(id)),
+    onAddSortField: (field) => dispatch(addSortField(field)),
+    onDeleteSortField: (field) => dispatch(deleteSortField(field)),
+    onChooseImage: (id, file) => dispatch(uploadImage(id, file))
 });
 
 export default connect(select, mapDispatchToProps)(App);

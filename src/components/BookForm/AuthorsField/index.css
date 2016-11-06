@@ -6,6 +6,11 @@
     font-size: 16px;
 }
 
+.title {
+    color: rgba(0, 0, 0, 0.498039);
+    font-size: 13px;
+}
+
 .author {
     margin-left: 30px;
 }
@@ -19,4 +24,11 @@
 .delete {
     float: right;
     margin-top: 10px;
+}
+
+.error {
+    position: relative;
+    font-size: 12px;
+    line-height: 12px;
+    color: rgb(244, 67, 54);
 }

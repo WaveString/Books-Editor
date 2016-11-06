@@ -3,10 +3,11 @@ const config = require('./config/config.json');
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const api = require('./routes/api');
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(`${__dirname}/build`));
 
@@ -23,8 +24,11 @@ if (__DEVELOPMENT__) {
     app.use(require('webpack-hot-middleware')(compiler));
 }
 
+app.use('/api', api);
+
 app.get('/markup', (req, res) => res.sendFile(`${__dirname}/build/index2.html`));
 app.get('/*', (req, res) => res.sendFile(`${__dirname}/build/index.html`));
+
 
 app.listen(config.port, () => {
     console.log(`listening on *: ${config.port}`);

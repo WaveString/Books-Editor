@@ -1,16 +1,16 @@
-import { clean, isEmptyObject } from './index';
+import { clean, isEmptyObject, formatDate } from './index';
 
 export const validate = (field, value) => {
     if (field === 'title') {
         return titleRule(value);
     }
 
-    if (field === 'pages') {
-        return pagesRule(value);
-    }
-
     if (field === 'authors') {
         return authorsRule(value);
+    }
+
+    if (field === 'pages') {
+        return pagesRule(value);
     }
 
     if (field === 'publisherName') {
@@ -19,6 +19,10 @@ export const validate = (field, value) => {
 
     if (field === 'published') {
         return publishedRule(value);
+    }
+
+    if (field === 'release') {
+        return releaseRule(value);
     }
 
     if (field === 'ISBN') {
@@ -102,12 +106,26 @@ function publishedRule(value) {
 
     value = Number(value);
 
+    if (!value) {
+        return;
+    }
+
     if (isNaN(value)) {
         return 'Только цифры';
     }
 
     if (value < count) {
         return `Не раньше ${count}`;
+    }
+}
+
+function releaseRule(value) {
+    const validationDate = new Date(1800, 0, 1);
+    const currentDate = new Date(value);
+    const timeDiff = currentDate.getTime() - validationDate.getTime();
+
+    if (timeDiff < 0) {
+        return `Не раньше ${formatDate(validationDate)}`;
     }
 }
 

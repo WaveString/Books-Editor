@@ -1,5 +1,6 @@
 [
   {
+    "image": "images/11a23297950ea93572a55dfd944aedc1.jpeg",
     "id": "1",
     "title": "Пикник на обочине",
     "authors": [
@@ -15,10 +16,11 @@
     "pages": "192",
     "publisherName": "АСТ Москва",
     "published": "1971",
-    "release": "01.01.2015",
+    "release": "2015-01-01T00:00:00.000Z",
     "ISBN": "978-5-17-093041-8"
   },
   {
+    "image": "images/bfa91af5c39219b37b3ee2e7a121effe.jpeg",
     "id": "2",
     "title": "Идиот",
     "authors": [
@@ -30,7 +32,7 @@
     "pages": "640",
     "publisherName": "Эксмо",
     "published": "1868",
-    "release": "10.02.2002",
+    "release": "2002-02-10T00:00:00.000Z",
     "ISBN": "978-5-699-37478-6"
   }
 ]

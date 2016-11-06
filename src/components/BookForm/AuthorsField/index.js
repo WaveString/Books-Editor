@@ -34,28 +34,29 @@ export default class AuthorsField extends Component {
     render() {
         const { authors = [], changes = null, errors = [] } = this.props;
         const data = changes || authors;
+        const authorsList = data.map((author, i) => {
+            return (
+                <div className={ styles.author } key={i}>
+                    <TextField
+                        floatingLabelText="Имя"
+                        hintText="Введите имя"
+                        value={ author.firstName }
+                        id="firstName"
+                        errorText={ errors[i] && errors[i].firstName }
+                        onChange={ this.handleOnChange.bind(this, i) }/>
+                    <TextField
+                        floatingLabelText="Фамилия"
+                        hintText="Введите фамилию"
+                        value={ author.lastName }
+                        id="lastName"
+                        errorText={ errors[i] && errors[i].lastName }
+                        onChange={ this.handleOnChange.bind(this, i) }/>
+                </div>);
+        });
 
         return (<div className={ styles.wrapper }>
-            <div>Aвторы: *</div>
-            { data.map((author, i) => {
-                return (
-                    <div className={ styles.author } key={i}>
-                        <TextField
-                            floatingLabelText="Имя"
-                            hintText="Введите имя"
-                            value={ author.firstName }
-                            id="firstName"
-                            errorText={ errors[i] && errors[i].firstName }
-                            onChange={ this.handleOnChange.bind(this, i) }/>
-                        <TextField
-                            floatingLabelText="Фамилия"
-                            hintText="Введите фамилию"
-                            value={ author.lastName }
-                            id="lastName"
-                            errorText={ errors[i] && errors[i].lastName }
-                            onChange={ this.handleOnChange.bind(this, i) }/>
-                    </div>);
-            })}
+            <div className={ styles.title }>Aвторы *</div>
+            { authorsList }
             <div className={ styles.button }>
                 <FlatButton
                     primary={true}
@@ -67,6 +68,9 @@ export default class AuthorsField extends Component {
                     secondary={true}
                     icon={<ActionDelete />}
                     onClick={ this.handleOnDeleteAuthor }/>
+            </div>
+            <div className={ styles.error }>
+                { data.length === 0 && errors }
             </div>
         </div>);
     }

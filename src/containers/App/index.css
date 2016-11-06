@@ -8,9 +8,10 @@
     display: inline-block;
     margin-left: 50px;
     vertical-align: top;
-    width: 450px;
+    width: 350px;
 }
 
 .controls {
     padding-left: 12px;
+    margin-bottom: 25px;
 }

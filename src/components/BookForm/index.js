@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
-import AuthorsField from '../AuthorsField';
-import { isEmptyObject } from '../../utils';
+import Paper from 'material-ui/Paper';
+import AuthorsField from './AuthorsField';
+import ImageField from './ImageField';
+
+import { isEmptyObject, formatDate } from '../../utils';
 import styles from './index.css';
 
 export default class BookForm extends Component {
@@ -13,6 +16,7 @@ export default class BookForm extends Component {
         this.handleOnChange = this.handleOnChange.bind(this);
         this.handleOnSave = this.handleOnSave.bind(this);
         this.handleOnDelete = this.handleOnDelete.bind(this);
+        this.openDatePicker = this.openDatePicker.bind(this);
     }
 
     handleOnChange(e) {
@@ -32,15 +36,41 @@ export default class BookForm extends Component {
         this.props.onDelete(id);
     }
 
+    handleOnChangeDate(field, empty, date) {
+        this.props.onFieldEdit(field, date);
+    }
+
+    openDatePicker(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        this.datepicker.focus();
+    }
+
     render() {
-        const { book, changes, errors, valid, onAddNewAuthor, onDeleteAuthor, onArrayFieldEdit } = this.props;
+        const {
+            book,
+            changes,
+            errors,
+            valid,
+            onAddNewAuthor,
+            onDeleteAuthor,
+            onArrayFieldEdit,
+            onChooseImage
+        } = this.props;
 
         if (isEmptyObject(book)) {
             return null;
         }
 
         return (
-            <div>
+            <Paper zDepth={2} className={ styles.paper }>
+                <ImageField
+                    id={book.id}
+                    image={book.image}
+                    error={errors.image}
+                    title={ changes.hasOwnProperty('title') ? changes.title : book.title }
+                    onChooseImage={onChooseImage} />
                 <TextField
                     floatingLabelText="Название книги *"
                     hintText="Введите название книги"
@@ -82,14 +112,20 @@ export default class BookForm extends Component {
                     errorText={errors.published}
                     onChange={this.handleOnChange}
                 />
-                <DatePicker hintText="Landscape Inline Dialog" container="inline" mode="landscape" />
+                <DatePicker
+                    hintText="Дата выхода в тираж"
+                    onChange={this.handleOnChangeDate.bind(this, 'release')}
+                    ref={(datepicker) => this.datepicker = datepicker}
+                    textFieldStyle={{ display: 'none' }}
+                    minDate={ new Date(1750, 0, 1) }
+                />
                 <TextField
                     floatingLabelText="Дата выхода в тираж"
                     hintText="Введите дату выхода в тираж"
-                    value={ changes.hasOwnProperty('release') ? changes.release : book.release }
+                    value={ changes.hasOwnProperty('release') ? formatDate(changes.release) : formatDate(book.release) }
                     id="release"
                     errorText={errors.release}
-                    onChange={this.handleOnChange}
+                    onSelect={this.openDatePicker}
                 />
                 <TextField
                     floatingLabelText="ISBN"
@@ -113,7 +149,7 @@ export default class BookForm extends Component {
                         secondary={ true }
                         />
                 </div>
-            </div>
+            </Paper>
         );
     }
 }
