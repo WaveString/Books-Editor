@@ -4,7 +4,6 @@ import ReactDom from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import Root from './containers/Root';
 
-import './index.css';
 import configureStore from './store/configureStore';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';

@@ -17,11 +17,6 @@ module.exports = {
             template: './src/html/index.html',
             inject: false
         }),
-        new HtmlWebpackPlugin({
-            filename: 'index2.html',
-            template: './src/html/index2.html',
-            inject: false
-        }),
         new CopyWebpackPlugin([
             { from: './static/images', to: './images' }
         ])

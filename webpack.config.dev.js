@@ -18,7 +18,7 @@ baseConfig.output = {
 
 baseConfig.plugins = baseConfig.plugins.concat([
     new webpack.HotModuleReplacementPlugin(),
-    new ExtractTextPlugin('bundle.css', { disable: true })
+    new ExtractTextPlugin('bundle.css')
 ]);
 
 baseConfig.devtool = '#cheap-source-map';
